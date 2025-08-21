@@ -3,6 +3,7 @@ import Translator from './components/Translator';
 import HistoryPanel from './components/HistoryPanel';
 import ErrorBoundary from './components/ErrorBoundary';
 import BatchTranslatePanel from "./components/BatchTranslatePanel";
+import LinkVocabPanel from "./components/LinkVocabPanel";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <div className="max-w-4xl mx-auto p-6">
             <Translator />
             <BatchTranslatePanel />
+            <LinkVocabPanel />
             <HistoryPanel />
         </div>
     </ErrorBoundary>
