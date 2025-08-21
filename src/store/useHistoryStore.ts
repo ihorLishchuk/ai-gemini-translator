@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
 import type { TranslationRecord } from "../types";
-import { addRecord, getRecent, deleteRecord, clearAll } from "../db";
+import {addRecord, getRecent, deleteRecord, clearAll, addRecordsBulk} from "../db";
 
 type HistoryStore = {
     items: TranslationRecord[];
@@ -10,13 +10,14 @@ type HistoryStore = {
     init: () => Promise<void>;
     refresh: () => Promise<void>;
     push: (rec: Omit<TranslationRecord, "id" | "createdAt">) => Promise<number>;
+    pushMany: (recs: Array<Omit<TranslationRecord, "id" | "createdAt">>) => Promise<number[]>;
     remove: (id: number) => Promise<void>;
     reset: () => Promise<void>;
 };
 
 const bc =
     typeof window !== "undefined" && "BroadcastChannel" in window
-        ? new BroadcastChannel("translate-history")
+        ? new BroadcastChannel("translate-db")
         : null;
 
 export const useHistoryStore = create<HistoryStore>()((set, get) => {
@@ -49,6 +50,15 @@ export const useHistoryStore = create<HistoryStore>()((set, get) => {
             await get().refresh();
             emitChanged();
             return id;
+        },
+
+        pushMany: async (recs) => {
+            const now = Date.now();
+            const payload = recs.map(r => ({ ...r, createdAt: now }));
+            const ids = await addRecordsBulk(payload);
+            await get().refresh();
+            emitChanged();
+            return ids;
         },
 
         remove: async (id) => {

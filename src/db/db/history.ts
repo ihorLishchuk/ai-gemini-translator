@@ -73,3 +73,26 @@ export async function clearAll(): Promise<void> {
         req.onerror = () => reject(req.error);
     });
 }
+
+export async function addRecordsBulk(
+    recs: Array<Omit<TranslationRecord, "id">>
+): Promise<number[]> {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+        const ids: number[] = [];
+
+        for (const rec of recs) {
+            const req = store.add(rec);
+            req.onsuccess = () => ids.push(req.result as number);
+            req.onerror = () => {
+                try { tx.abort(); } finally { /* no-op */ }
+            };
+        }
+
+        tx.oncomplete = () => resolve(ids);
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error);
+    });
+}
