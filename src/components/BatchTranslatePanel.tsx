@@ -136,7 +136,7 @@ function BatchTranslatePanel() {
                         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                             <button
                                 className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-lg border border-gray-300
-                           text-sm sm:text-base active:scale-[0.99] disabled:opacity-60"
+                           text-sm sm:text-base active:scale-[0.99] disabled:bg-gray-300 disabled:text-white"
                                 onClick={enqueueFromTextarea}
                                 disabled={!listInput.trim()}
                             >
@@ -173,7 +173,7 @@ function BatchTranslatePanel() {
                         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                             <button
                                 className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-lg bg-black text-white
-                           text-sm sm:text-base active:scale-[0.99] disabled:opacity-60"
+                           text-sm sm:text-base active:scale-[0.99] disabled:bg-gray-300 disabled:text-white"
                                 onClick={runBatch}
                                 disabled={running || queue.length === 0}
                             >
@@ -182,7 +182,7 @@ function BatchTranslatePanel() {
 
                             <button
                                 className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-lg border border-gray-300
-                           text-sm sm:text-base active:scale-[0.99] disabled:opacity-60"
+                           text-sm sm:text-base active:scale-[0.99] disabled:bg-gray-300 disabled:text-white"
                                 onClick={() => setQueue([])}
                                 disabled={running || queue.length === 0}
                             >
