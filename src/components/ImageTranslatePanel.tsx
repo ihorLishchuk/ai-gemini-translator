@@ -140,7 +140,7 @@ function ImageTranslatePanel() {
                     <div className="space-y-3">
                         <div className="flex gap-2">
                             <button
-                                className="px-3 py-1 rounded border"
+                                className="px-3 py-1 rounded border disabled:bg-gray-300 disabled:text-white"
                                 onClick={() => fileRef.current?.click()}
                                 disabled={ocrRunning || trRunning}
                             >
@@ -159,7 +159,7 @@ function ImageTranslatePanel() {
                                 }}
                             />
                             <button
-                                className="px-3 py-1 rounded border"
+                                className="px-3 py-1 rounded border disabled:bg-gray-300 disabled:text-white"
                                 onClick={clearAll}
                                 disabled={(ocrRunning || trRunning) || queue.length === 0}
                             >
@@ -169,37 +169,16 @@ function ImageTranslatePanel() {
 
                         <LanguageSelector {...languageSelectorProps} />
 
-                        {/*<div>*/}
-                        {/*    <div className="text-xs text-gray-500 mb-1">OCR languages</div>*/}
-                        {/*    <select*/}
-                        {/*        className="border p-2 rounded w-full"*/}
-                        {/*        multiple*/}
-                        {/*        size={Math.min(8, Object.keys(TESS_LANG_MAP).length)}*/}
-                        {/*        value={ocrLangs}*/}
-                        {/*        onChange={(e) => {*/}
-                        {/*            const vals = Array.from(e.target.selectedOptions).map((o) => o.value as AppLang);*/}
-                        {/*            setOcrLangs(vals);*/}
-                        {/*        }}*/}
-                        {/*        disabled={ocrRunning || trRunning}*/}
-                        {/*    >*/}
-                        {/*        {Object.entries(TESS_LANG_MAP).map(([appCode, tessCode]) => (*/}
-                        {/*            <option key={appCode} value={appCode}>*/}
-                        {/*                {appCode.toUpperCase()} ({tessCode})*/}
-                        {/*            </option>*/}
-                        {/*        ))}*/}
-                        {/*    </select>*/}
-                        {/*</div>*/}
-
                         <div className="flex gap-2">
                             <button
-                                className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
+                                className="px-3 py-1 rounded bg-black text-white disabled:bg-gray-300 "
                                 onClick={runOcr}
                                 disabled={ocrRunning || trRunning || queue.length === 0}
                             >
                                 Recognize text {queue.length ? `(${queue.length})` : ""}
                             </button>
                             <button
-                                className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
+                                className="px-3 py-1 rounded bg-black text-white disabled:bg-gray-300 "
                                 onClick={translateAll}
                                 disabled={trRunning || !canTranslateAll}
                             >
