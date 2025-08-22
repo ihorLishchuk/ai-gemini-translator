@@ -4,27 +4,29 @@ import { SwapIcon } from "./icons";
 import { UseTranslationReturn } from "../hooks/useTranslation";
 import { UseLanguageSwapReturn } from "../hooks/useLanguageSwap";
 
-const LanguageSelector: React.FC<Partial<UseTranslationReturn> & Partial<UseLanguageSwapReturn> & any> =  ({
-     sourceLanguage,
-     targetLanguage,
-     setSourceLanguage,
-     setTargetLanguage,
-     swapLanguages,
-     inputText,
-     translatedText,
-     setInputText,
-     setTranslatedText
+type Props = Partial<UseTranslationReturn> & Partial<UseLanguageSwapReturn> & any;
+
+const LanguageSelector: React.FC<Props> = ({
+   sourceLanguage,
+   targetLanguage,
+   setSourceLanguage,
+   setTargetLanguage,
+   swapLanguages,
+   inputText,
+   translatedText,
+   setInputText,
+   setTranslatedText,
 }) => {
     const handleSwapLanguages = () => {
         swapLanguages(inputText, translatedText, setInputText, setTranslatedText);
     };
 
     return (
-        <div className="flex gap-4 mb-4 items-center">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-4">
             <select
                 value={sourceLanguage}
                 onChange={(e) => setSourceLanguage(e.target.value)}
-                className="flex-1 p-2 pr-8 border border-gray-300 rounded-lg text-base"
+                className="w-full rounded-lg border border-gray-300 p-3 pr-8 text-sm sm:text-base bg-white focus:outline-none focus:ring-2 focus:ring-gray-800/20"
             >
                 {LANGUAGES.map((lang) => (
                     <option key={lang.code} value={lang.code}>
@@ -35,16 +37,17 @@ const LanguageSelector: React.FC<Partial<UseTranslationReturn> & Partial<UseLang
 
             <button
                 onClick={handleSwapLanguages}
-                className="p-2 bg-transparent border border-gray-300 rounded-lg cursor-pointer text-gray-500 flex items-center justify-center transition-all hover:bg-gray-100 hover:text-gray-700 hover:border-gray-400 w-10 h-10"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-800 hover:border-gray-400 active:scale-[0.99] transition h-12 sm:h-10 sm:w-10"
                 title="Swap languages"
             >
                 <SwapIcon className="w-5 h-5" />
+                <span className="sm:hidden ml-2 text-sm">Swap</span>
             </button>
 
             <select
                 value={targetLanguage}
                 onChange={(e) => setTargetLanguage(e.target.value)}
-                className="flex-1 p-2 pr-8 border border-gray-300 rounded-lg text-base"
+                className="w-full rounded-lg border border-gray-300 p-3 pr-8 text-sm sm:text-base bg-white focus:outline-none focus:ring-2 focus:ring-gray-800/20"
             >
                 {LANGUAGES.map((lang) => (
                     <option key={lang.code} value={lang.code}>
@@ -54,6 +57,6 @@ const LanguageSelector: React.FC<Partial<UseTranslationReturn> & Partial<UseLang
             </select>
         </div>
     );
-}
+};
 
 export default LanguageSelector;

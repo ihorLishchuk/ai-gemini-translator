@@ -7,26 +7,26 @@ import LanguageSelector from "./LanguageSelector";
 function parsePlainText(text: string): string[] {
     return text
         .split(/\r?\n/)
-        .map(s => s.trim())
+        .map((s) => s.trim())
         .filter(Boolean);
 }
 
 function parseCsv(text: string): string[] {
     return text
         .split(/\r?\n/)
-        .map(l => l.trim())
+        .map((l) => l.trim())
         .filter(Boolean)
-        .map(l => {
+        .map((l) => {
             const parts = l.split(/[,;](.*)/s);
             return (parts[0] ?? "").trim();
         })
         .filter(Boolean)
-        .filter(s => s.toLowerCase() !== "text");
+        .filter((s) => s.toLowerCase() !== "text");
 }
 
 function BatchTranslatePanel() {
     const { init, pushMany } = useHistorySlice(({ init, pushMany }) => ({ init, pushMany }));
-    const [inputText, setInputText] = useState('');
+    const [inputText, setInputText] = useState("");
     const [listInput, setListInput] = useState("");
     const [queue, setQueue] = useState<string[]>([]);
     const [running, setRunning] = useState(false);
@@ -40,28 +40,27 @@ function BatchTranslatePanel() {
         targetLanguage,
         setSourceLanguage,
         setTargetLanguage,
-        swapLanguages
+        swapLanguages,
     } = useLanguageSwap();
 
-    useEffect(() => { void init(); }, [init]);
+    useEffect(() => {
+        void init();
+    }, [init]);
 
     function enqueueFromTextarea() {
         const items = parsePlainText(listInput);
-        setQueue(prev => [...prev, ...items]);
+        setQueue((prev) => [...prev, ...items]);
         setListInput("");
     }
 
     async function handleFile(file: File) {
-        debugger;
         const text = await file.text();
         const ext = file.name.toLowerCase().split(".").pop() || "";
         let items: string[] = [];
         if (ext === "txt") items = parsePlainText(text);
         else if (ext === "csv") items = parseCsv(text);
-        else {
-            items = parsePlainText(text);
-        }
-        setQueue(prev => [...prev, ...items]);
+        else items = parsePlainText(text);
+        setQueue((prev) => [...prev, ...items]);
     }
 
     async function runBatch() {
@@ -69,6 +68,7 @@ function BatchTranslatePanel() {
         setRunning(true);
         setProgress({ done: 0, total: queue.length });
 
+        // Keep your history write if you need it later
         const results: Array<{
             sourceText: string;
             translatedText: string;
@@ -83,7 +83,7 @@ function BatchTranslatePanel() {
             } catch (e) {
                 console.error("Translate failed for:", sourceText, e);
             } finally {
-                setProgress(p => ({ ...p, done: p.done + 1 }));
+                setProgress((p) => ({ ...p, done: p.done + 1 }));
             }
         }
 
@@ -104,42 +104,54 @@ function BatchTranslatePanel() {
         inputText,
         translatedText,
         setInputText,
-        setTranslatedText
-    }
+        setTranslatedText,
+    };
 
     return (
         <>
-            <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold text-gray-800">AI Batch Translator</h1>
+            <div className="text-center mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-4xl font-bold text-gray-800">
+                    AI Batch Translator
+                </h1>
             </div>
-            <div className="p-4 border rounded-lg shadow-sm bg-white/70 backdrop-blur mb-4">
-                <div className="mb-3">
-                    <h2 className="text-lg font-semibold">Batch translation</h2>
-                    <p className="text-sm text-gray-500">Insert one expression per line or upload .txt/.csv</p>
+
+            <div className="p-4 sm:p-6 border rounded-xl shadow-sm bg-white/80 backdrop-blur mb-4">
+                <div className="mb-4 sm:mb-6">
+                    <h2 className="text-base sm:text-lg font-semibold">Batch translation</h2>
+                    <p className="text-xs sm:text-sm text-gray-500">
+                        Insert one expression per line or upload .txt/.csv
+                    </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-3">
-                    <div className="space-y-2">
-          <textarea
-              className="w-full min-h-[140px] border p-2 rounded"
-              placeholder="Each line is a separate translation"
-              value={listInput}
-              onChange={e => setListInput(e.target.value)}
-          />
-                        <div className="flex gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-3">
+            <textarea
+                className="w-full min-h-[160px] sm:min-h-[180px] rounded-lg border border-gray-300 p-3 text-sm sm:text-base
+                         focus:outline-none focus:ring-2 focus:ring-gray-800/20"
+                placeholder="Each line is a separate translation"
+                value={listInput}
+                onChange={(e) => setListInput(e.target.value)}
+                inputMode="text"
+            />
+
+                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                             <button
-                                className="px-3 py-1 rounded border"
+                                className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-lg border border-gray-300
+                           text-sm sm:text-base active:scale-[0.99] disabled:opacity-60"
                                 onClick={enqueueFromTextarea}
                                 disabled={!listInput.trim()}
                             >
                                 Add to queue
                             </button>
+
                             <button
-                                className="px-3 py-1 rounded border"
+                                className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-lg border border-gray-300
+                           text-sm sm:text-base active:scale-[0.99]"
                                 onClick={() => fileRef.current?.click()}
                             >
                                 Upload file
                             </button>
+
                             <input
                                 ref={fileRef}
                                 type="file"
@@ -154,33 +166,52 @@ function BatchTranslatePanel() {
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <LanguageSelector {...languageSelectorProps} />
-                        <div className="flex gap-2">
+                    <div className="space-y-3">
+                        <div className="w-full">
+                            <LanguageSelector {...languageSelectorProps} />
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                             <button
-                                className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
+                                className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-lg bg-black text-white
+                           text-sm sm:text-base active:scale-[0.99] disabled:opacity-60"
                                 onClick={runBatch}
                                 disabled={running || queue.length === 0}
                             >
                                 Translate {queue.length > 0 ? `(${queue.length})` : ""}
                             </button>
+
                             <button
-                                className="px-3 py-1 rounded border"
+                                className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-lg border border-gray-300
+                           text-sm sm:text-base active:scale-[0.99] disabled:opacity-60"
                                 onClick={() => setQueue([])}
                                 disabled={running || queue.length === 0}
                             >
                                 Clear queue
                             </button>
                         </div>
-                        {running && (
-                            <div className="text-sm text-gray-600">
-                                Progress: {progress.done} / {progress.total}
+
+                        {running ? (
+                            <div className="space-y-1">
+                                <div className="text-xs sm:text-sm text-gray-700">
+                                    Progress: {progress.done} / {progress.total}
+                                </div>
+                                <div className="w-full h-2 bg-gray-200 rounded">
+                                    <div
+                                        className="h-2 bg-gray-800 rounded transition-all"
+                                        style={{
+                                            width:
+                                                progress.total > 0
+                                                    ? `${Math.round((progress.done / progress.total) * 100)}%`
+                                                    : "0%",
+                                        }}
+                                    />
+                                </div>
                             </div>
-                        )}
-                        {!running && queue.length > 0 && (
-                            <div className="text-sm text-gray-600">
-                                Queue: {queue.length}
-                            </div>
+                        ) : (
+                            queue.length > 0 && (
+                                <div className="text-xs sm:text-sm text-gray-600">Queue: {queue.length}</div>
+                            )
                         )}
                     </div>
                 </div>
