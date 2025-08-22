@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistorySlice } from "../store/useHistoryStore";
-import {useTranslation} from "../hooks/useTranslation";
-import {useLanguageSwap} from "../hooks/useLanguageSwap";
+import { useTranslation } from "../hooks/useTranslation";
+import { useLanguageSwap } from "../hooks/useLanguageSwap";
 import LanguageSelector from "./LanguageSelector";
 
 function parsePlainText(text: string): string[] {

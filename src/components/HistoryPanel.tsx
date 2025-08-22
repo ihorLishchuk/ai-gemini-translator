@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
-import {useHistorySlice} from "../store/useHistoryStore";
-import {PlayIcon} from "./icons";
-import {speakText} from "../utils/speechSynthesis";
+import React, { useEffect } from "react";
+import { useHistorySlice} from "../store/useHistoryStore";
+import { PlayIcon } from "./icons";
+import { speakText } from "../utils/speechSynthesis";
 
 const HistoryPanel: React.FC = () => {
     const { items, loading, init, remove, reset } = useHistorySlice((store) => ({

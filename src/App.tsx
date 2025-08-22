@@ -23,18 +23,6 @@ function App() {
                         <Route path="/translate" element={<Translator />} />
                         <Route path="/batch" element={<BatchTranslatePanel />} />
                         <Route path="/vocab" element={<LinkVocabPanel />} />
-                        <Route path="/history" element={<HistoryPanel />} />
-
-                        <Route
-                            path="/all"
-                            element={
-                                <>
-                                    <Translator />
-                                    <BatchTranslatePanel />
-                                    <LinkVocabPanel />
-                                </>
-                            }
-                        />
 
                         <Route path="*" element={<NotFound />} />
                     </Routes>
@@ -47,7 +35,7 @@ function App() {
 
 function NotFound() {
     return (
-        <div className="text-center text-gray-600">
+        <div className="text-center text-gray-600 mb-4">
             <h1 className="text-2xl font-semibold mb-2">404 — Not found</h1>
             <p>
                 Try <Link to="/translate" className="underline">Translate</Link> or use the navigation above.

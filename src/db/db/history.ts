@@ -1,4 +1,4 @@
-import {TranslationRecord} from "../../types";
+import { TranslationRecord } from "../../types";
 
 const DB_NAME = "translate-history-db";
 const STORE_NAME = "records";

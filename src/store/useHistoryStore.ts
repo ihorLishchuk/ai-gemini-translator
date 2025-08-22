@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
 import type { TranslationRecord } from "../types";
-import {addRecord, getRecent, deleteRecord, clearAll, addRecordsBulk} from "../db";
+import { addRecord, getRecent, deleteRecord, clearAll, addRecordsBulk } from "../db";
 
 type HistoryStore = {
     items: TranslationRecord[];

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { translateText } from '../helpers';
-import {useHistorySlice} from "../store/useHistoryStore";
+import { useHistorySlice } from "../store/useHistoryStore";
 
 export interface UseTranslationReturn {
   translatedText: string;

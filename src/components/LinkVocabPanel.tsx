@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { extractKeywords, type Keyword } from "../utils/keywords";
 import { useTranslation } from "../hooks/useTranslation";
-import {useHistorySlice} from "../store/useHistoryStore";
-import {useLanguageSwap} from "../hooks/useLanguageSwap";
+import { useHistorySlice } from "../store/useHistoryStore";
+import { useLanguageSwap } from "../hooks/useLanguageSwap";
 import LanguageSelector from "./LanguageSelector";
 
 async function fetchArticleText(url: string): Promise<string> {

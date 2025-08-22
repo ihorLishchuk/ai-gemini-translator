@@ -1,8 +1,8 @@
 import React from "react";
-import {LANGUAGES} from "../helpers";
-import {SwapIcon} from "./icons";
-import {UseTranslationReturn} from "../hooks/useTranslation";
-import {UseLanguageSwapReturn} from "../hooks/useLanguageSwap";
+import { LANGUAGES } from "../helpers";
+import { SwapIcon } from "./icons";
+import { UseTranslationReturn } from "../hooks/useTranslation";
+import { UseLanguageSwapReturn } from "../hooks/useLanguageSwap";
 
 const LanguageSelector: React.FC<Partial<UseTranslationReturn> & Partial<UseLanguageSwapReturn> & any> =  ({
      sourceLanguage,
