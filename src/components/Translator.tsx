@@ -48,7 +48,6 @@ const Translator: React.FC = () => {
     speakText(text, targetLanguage);
   };
 
-
   const languageSelectorProps = {
     sourceLanguage,
     targetLanguage,

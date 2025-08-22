@@ -36,7 +36,6 @@ export async function getRecent(limit = 100): Promise<TranslationRecord[]> {
         const store = tx.objectStore(STORE_NAME);
         const index = store.index("createdAt_idx");
 
-        // Збираємо в зворотному порядку за createdAt
         const results: TranslationRecord[] = [];
         const direction: IDBCursorDirection = "prev";
         const req = index.openCursor(null, direction);

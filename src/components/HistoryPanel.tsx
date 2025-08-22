@@ -18,7 +18,7 @@ const HistoryPanel: React.FC = () => {
         <div className="p-4 border rounded-lg shadow-sm bg-white/70">
             <div className="flex items-center justify-between mb-3">
                 <h2 className="text-lg font-semibold">History Panel</h2>
-                <button className="px-3 py-1 rounded border text-red-600" onClick={() => reset()}>
+                <button className="px-3 py-1 rounded border text-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-white" disabled={items.length === 0} onClick={() => reset()}>
                     Clear History
                 </button>
             </div>
@@ -30,7 +30,7 @@ const HistoryPanel: React.FC = () => {
             ) : (
                 <ul className="space-y-3 max-h-[50vh] overflow-auto">
                     {items.map((r) => (
-                        <li key={r.id} className="relative p-3 rounded-xl border bg-white">
+                        <li key={r.id} className="relative p-3 rounded-lg border bg-white">
                             <div className="flex items-center justify-between text-xs text-gray-500">
                                 <div>
                                     {r.fromLang} → {r.toLang} • {new Date(r.createdAt).toLocaleString()}

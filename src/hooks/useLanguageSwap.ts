@@ -9,7 +9,7 @@ export interface UseLanguageSwapReturn {
 }
 
 export const useLanguageSwap = (): UseLanguageSwapReturn => {
-  const [sourceLanguage, setSourceLanguage] = useState('en');
+  const [sourceLanguage, setSourceLanguage] = useState('auto');
   const [targetLanguage, setTargetLanguage] = useState('de');
 
   const swapLanguages = (

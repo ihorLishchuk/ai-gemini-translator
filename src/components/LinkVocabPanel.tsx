@@ -111,7 +111,7 @@ function LinkVocabPanel() {
             <div className="text-center mb-6 sm:mb-8">
                 <h1 className="text-2xl sm:text-4xl font-bold text-gray-800">AI Link Vocab</h1>
             </div>
-            <div className="p-4 sm:p-6 border rounded-xl mb-4 shadow-sm bg-white/80 backdrop-blur">
+            <div className="p-4 border rounded-lg mb-4 shadow-sm bg-white/80 backdrop-blur">
                 <div className="mb-4 sm:mb-6">
                     <h2 className="text-base sm:text-lg font-semibold">AI dictionary from the link</h2>
                     <p className="text-xs sm:text-sm text-gray-500">

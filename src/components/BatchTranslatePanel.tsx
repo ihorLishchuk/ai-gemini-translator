@@ -68,7 +68,6 @@ function BatchTranslatePanel() {
         setRunning(true);
         setProgress({ done: 0, total: queue.length });
 
-        // Keep your history write if you need it later
         const results: Array<{
             sourceText: string;
             translatedText: string;
@@ -115,7 +114,7 @@ function BatchTranslatePanel() {
                 </h1>
             </div>
 
-            <div className="p-4 sm:p-6 border rounded-xl shadow-sm bg-white/80 backdrop-blur mb-4">
+            <div className="p-4 border rounded-lg shadow-sm bg-white/80 backdrop-blur mb-4">
                 <div className="mb-4 sm:mb-6">
                     <h2 className="text-base sm:text-lg font-semibold">Batch translation</h2>
                     <p className="text-xs sm:text-sm text-gray-500">
