@@ -103,84 +103,89 @@ function LinkVocabPanel() {
     }
 
     return (
-        <div className="p-4 border rounded-lg mb-4 shadow-sm bg-white/70 backdrop-blur">
-            <div className="mb-3">
-                <h2 className="text-lg font-semibold">AI dictionary from the link</h2>
-                <p className="text-sm text-gray-500">Enter the URL of the article, we will extract the keywords and add their translation to the story.</p>
+        <>
+            <div className="text-center mb-8">
+                <h1 className="text-4xl font-bold text-gray-800">AI Link Vocab</h1>
             </div>
-
-            <div className="grid md:grid-cols-2 gap-3">
-                <div className="space-y-2">
-                    <input
-                        className="border p-2 rounded w-full"
-                        placeholder="https://example.com/article"
-                        value={url}
-                        onChange={e => setUrl(e.target.value)}
-                        disabled={loading || running}
-                    />
-                    <LanguageSelector {...languageSelectorProps} />
-                    <button
-                        className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
-                        onClick={handleFetch}
-                        disabled={!url.trim() || loading || running}
-                    >
-                        Read the article
-                    </button>
-                    {err && <div className="text-sm text-red-600">{err}</div>}
-                    {article && (
-                        <div className="text-xs text-gray-500 max-h-28 overflow-auto border rounded p-2 whitespace-pre-wrap">
-                            {article.slice(0, 2000)}
-                            {article.length > 2000 ? " …" : ""}
-                        </div>
-                    )}
+            <div className="p-4 border rounded-lg mb-4 shadow-sm bg-white/70 backdrop-blur">
+                <div className="mb-3">
+                    <h2 className="text-lg font-semibold">AI dictionary from the link</h2>
+                    <p className="text-sm text-gray-500">Enter the URL of the article, we will extract the keywords and add their translation to the story.</p>
                 </div>
 
-                <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                        <div className="text-sm font-medium">Key words ({keywords.length})</div>
-                        <div className="flex gap-2">
-                            <button className="px-2 py-1 rounded border" onClick={() => toggleAll(true)} disabled={loading || running}>All</button>
-                            <button className="px-2 py-1 rounded border" onClick={() => toggleAll(false)} disabled={loading || running}>None</button>
-                        </div>
-                    </div>
-
-                    <div className="border rounded p-2 max-h-60 overflow-auto">
-                        {keywords.length === 0 ? (
-                            <div className="text-sm text-gray-500">Not yet. Read the article.</div>
-                        ) : (
-                            <ul className="grid grid-cols-2 gap-2 text-sm">
-                                {keywords.map(k => (
-                                    <li key={k.word} className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={!!selected[k.word]}
-                                            onChange={e => setSelected(s => ({ ...s, [k.word]: e.target.checked }))}
-                                            disabled={running}
-                                        />
-                                        <span className="truncate" title={`${k.word} (${k.count})`}>{k.word}</span>
-                                        <span className="text-xs text-gray-400">×{k.count}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                <div className="grid md:grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                        <input
+                            className="border p-2 rounded w-full"
+                            placeholder="https://example.com/article"
+                            value={url}
+                            onChange={e => setUrl(e.target.value)}
+                            disabled={loading || running}
+                        />
+                        <LanguageSelector {...languageSelectorProps} />
+                        <button
+                            className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
+                            onClick={handleFetch}
+                            disabled={!url.trim() || loading || running}
+                        >
+                            Read the article
+                        </button>
+                        {err && <div className="text-sm text-red-600">{err}</div>}
+                        {article && (
+                            <div className="text-xs text-gray-500 max-h-28 overflow-auto border rounded p-2 whitespace-pre-wrap">
+                                {article.slice(0, 2000)}
+                                {article.length > 2000 ? " …" : ""}
+                            </div>
                         )}
                     </div>
 
-                    <button
-                        className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
-                        onClick={translateSelected}
-                        disabled={!anySelected || running}
-                    >
-                        Translate selected {anySelected && `(${Object.values(selected).filter(Boolean).length})`}
-                    </button>
-
-                    {running && (
-                        <div className="text-sm text-gray-600">
-                            Progress: {progress.done} / {progress.total}
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                            <div className="text-sm font-medium">Key words ({keywords.length})</div>
+                            <div className="flex gap-2">
+                                <button className="px-2 py-1 rounded border" onClick={() => toggleAll(true)} disabled={loading || running}>All</button>
+                                <button className="px-2 py-1 rounded border" onClick={() => toggleAll(false)} disabled={loading || running}>None</button>
+                            </div>
                         </div>
-                    )}
+
+                        <div className="border rounded p-2 max-h-60 overflow-auto">
+                            {keywords.length === 0 ? (
+                                <div className="text-sm text-gray-500">Not yet. Read the article.</div>
+                            ) : (
+                                <ul className="grid grid-cols-2 gap-2 text-sm">
+                                    {keywords.map(k => (
+                                        <li key={k.word} className="flex items-center gap-2">
+                                            <input
+                                                type="checkbox"
+                                                checked={!!selected[k.word]}
+                                                onChange={e => setSelected(s => ({ ...s, [k.word]: e.target.checked }))}
+                                                disabled={running}
+                                            />
+                                            <span className="truncate" title={`${k.word} (${k.count})`}>{k.word}</span>
+                                            <span className="text-xs text-gray-400">×{k.count}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+
+                        <button
+                            className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
+                            onClick={translateSelected}
+                            disabled={!anySelected || running}
+                        >
+                            Translate selected {anySelected && `(${Object.values(selected).filter(Boolean).length})`}
+                        </button>
+
+                        {running && (
+                            <div className="text-sm text-gray-600">
+                                Progress: {progress.done} / {progress.total}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

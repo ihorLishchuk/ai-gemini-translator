@@ -21,7 +21,11 @@ export const translateText = async (
     const prompt = `
       Translate this text from
       ${from} to ${to}. 
-      Provide only the translation, no explanations or additional text:"${inputText}".
+      Provide only the translation, with examples in ${to} only and no additional text :"${inputText}".
+      Please follow the next format:
+      Translation
+      Examples
+      Please, do not include these words like translation and examples.
     `;
 
     const result = await model.generateContent(prompt);

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import DOMPurify from "dompurify";
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import { useTranslation } from '../hooks/useTranslation';
 import { useLanguageSwap } from '../hooks/useLanguageSwap';
@@ -43,10 +44,10 @@ const Translator: React.FC = () => {
   const handleStartListening = () => {
     startSpeechRecognition(setInputText);
   };
-
   const handleSpeakText = (text: string) => {
     speakText(text, targetLanguage);
   };
+
 
   const languageSelectorProps = {
     sourceLanguage,
@@ -104,7 +105,10 @@ const Translator: React.FC = () => {
 
       {translatedText && (
         <div className="relative bg-gray-50 p-4 rounded-lg min-h-[150px] mt-4 mb-4">
-          <p className="whitespace-pre-wrap m-0">{translatedText}</p>
+          <p
+              className="whitespace-pre-wrap m-0"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(translatedText) }}
+          />
           <button
             onClick={() => handleSpeakText(translatedText)}
             className="absolute bottom-4 right-4 p-2 bg-transparent border-none cursor-pointer text-gray-500 hover:text-gray-700"

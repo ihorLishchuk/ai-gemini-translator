@@ -52,6 +52,7 @@ function BatchTranslatePanel() {
     }
 
     async function handleFile(file: File) {
+        debugger;
         const text = await file.text();
         const ext = file.name.toLowerCase().split(".").pop() || "";
         let items: string[] = [];
@@ -107,79 +108,84 @@ function BatchTranslatePanel() {
     }
 
     return (
-        <div className="p-4 border rounded-lg shadow-sm bg-white/70 backdrop-blur mb-4">
-            <div className="mb-3">
-                <h2 className="text-lg font-semibold">Batch translation</h2>
-                <p className="text-sm text-gray-500">Insert one expression per line or upload .txt/.csv</p>
+        <>
+            <div className="text-center mb-8">
+                <h1 className="text-4xl font-bold text-gray-800">AI Batch Translator</h1>
             </div>
+            <div className="p-4 border rounded-lg shadow-sm bg-white/70 backdrop-blur mb-4">
+                <div className="mb-3">
+                    <h2 className="text-lg font-semibold">Batch translation</h2>
+                    <p className="text-sm text-gray-500">Insert one expression per line or upload .txt/.csv</p>
+                </div>
 
-            <div className="grid md:grid-cols-2 gap-3">
-                <div className="space-y-2">
+                <div className="grid md:grid-cols-2 gap-3">
+                    <div className="space-y-2">
           <textarea
               className="w-full min-h-[140px] border p-2 rounded"
               placeholder="Each line is a separate translation"
               value={listInput}
               onChange={e => setListInput(e.target.value)}
           />
-                    <div className="flex gap-2">
-                        <button
-                            className="px-3 py-1 rounded border"
-                            onClick={enqueueFromTextarea}
-                            disabled={!listInput.trim()}
-                        >
-                            Add to queue
-                        </button>
-                        <button
-                            className="px-3 py-1 rounded border"
-                            onClick={() => fileRef.current?.click()}
-                        >
-                            Upload file
-                        </button>
-                        <input
-                            ref={fileRef}
-                            type="file"
-                            accept=".txt,.csv,text/plain,text/csv"
-                            className="hidden"
-                            onChange={async (e) => {
-                                const f = e.target.files?.[0];
-                                if (f) await handleFile(f);
-                                e.currentTarget.value = "";
-                            }}
-                        />
+                        <div className="flex gap-2">
+                            <button
+                                className="px-3 py-1 rounded border"
+                                onClick={enqueueFromTextarea}
+                                disabled={!listInput.trim()}
+                            >
+                                Add to queue
+                            </button>
+                            <button
+                                className="px-3 py-1 rounded border"
+                                onClick={() => fileRef.current?.click()}
+                            >
+                                Upload file
+                            </button>
+                            <input
+                                ref={fileRef}
+                                type="file"
+                                accept=".txt,.csv,text/plain,text/csv"
+                                className="hidden"
+                                onChange={async (e) => {
+                                    const f = e.target.files?.[0];
+                                    if (f) await handleFile(f);
+                                    e.target.value = "";
+                                }}
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div className="space-y-2">
-                    <LanguageSelector {...languageSelectorProps} />
-                    <div className="flex gap-2">
-                        <button
-                            className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
-                            onClick={runBatch}
-                            disabled={running || queue.length === 0}
-                        >
-                            Translate {queue.length > 0 ? `(${queue.length})` : ""}
-                        </button>
-                        <button
-                            className="px-3 py-1 rounded border"
-                            onClick={() => setQueue([])}
-                            disabled={running || queue.length === 0}
-                        >
-                            Clear queue
-                        </button>
+                    <div className="space-y-2">
+                        <LanguageSelector {...languageSelectorProps} />
+                        <div className="flex gap-2">
+                            <button
+                                className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
+                                onClick={runBatch}
+                                disabled={running || queue.length === 0}
+                            >
+                                Translate {queue.length > 0 ? `(${queue.length})` : ""}
+                            </button>
+                            <button
+                                className="px-3 py-1 rounded border"
+                                onClick={() => setQueue([])}
+                                disabled={running || queue.length === 0}
+                            >
+                                Clear queue
+                            </button>
+                        </div>
+                        {running && (
+                            <div className="text-sm text-gray-600">
+                                Progress: {progress.done} / {progress.total}
+                            </div>
+                        )}
+                        {!running && queue.length > 0 && (
+                            <div className="text-sm text-gray-600">
+                                Queue: {queue.length}
+                            </div>
+                        )}
                     </div>
-                    {running && (
-                        <div className="text-sm text-gray-600">
-                            Progress: {progress.done} / {progress.total}
-                        </div>
-                    )}
-                    {!running && queue.length > 0 && (
-                        <div className="text-sm text-gray-600">
-                            Queue: {queue.length}
-                        </div>
-                    )}
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
