@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { translateText } from '../helpers';
 import {useHistorySlice} from "../store/useHistoryStore";
 
-interface UseTranslationReturn {
+export interface UseTranslationReturn {
   translatedText: string;
   isTranslating: boolean;
   error: string;

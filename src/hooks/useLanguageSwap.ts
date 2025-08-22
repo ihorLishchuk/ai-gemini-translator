@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-interface UseLanguageSwapReturn {
+export interface UseLanguageSwapReturn {
   sourceLanguage: string;
   targetLanguage: string;
   setSourceLanguage: (language: string) => void;

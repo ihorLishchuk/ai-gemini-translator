@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistorySlice } from "../store/useHistoryStore";
 import {useTranslation} from "../hooks/useTranslation";
 import {useLanguageSwap} from "../hooks/useLanguageSwap";
+import LanguageSelector from "./LanguageSelector";
 
 function parsePlainText(text: string): string[] {
     return text
@@ -25,19 +26,21 @@ function parseCsv(text: string): string[] {
 
 function BatchTranslatePanel() {
     const { init, pushMany } = useHistorySlice(({ init, pushMany }) => ({ init, pushMany }));
+    const [inputText, setInputText] = useState('');
     const [listInput, setListInput] = useState("");
     const [queue, setQueue] = useState<string[]>([]);
     const [running, setRunning] = useState(false);
     const [progress, setProgress] = useState({ done: 0, total: 0 });
     const fileRef = useRef<HTMLInputElement>(null);
 
-    const { handleTranslate } = useTranslation();
+    const { translatedText, setTranslatedText, handleTranslate } = useTranslation();
 
     const {
         sourceLanguage,
         targetLanguage,
         setSourceLanguage,
         setTargetLanguage,
+        swapLanguages
     } = useLanguageSwap();
 
     useEffect(() => { void init(); }, [init]);
@@ -91,6 +94,18 @@ function BatchTranslatePanel() {
         setRunning(false);
     }
 
+    const languageSelectorProps = {
+        sourceLanguage,
+        targetLanguage,
+        setSourceLanguage,
+        setTargetLanguage,
+        swapLanguages,
+        inputText,
+        translatedText,
+        setInputText,
+        setTranslatedText
+    }
+
     return (
         <div className="p-4 border rounded-lg shadow-sm bg-white/70 backdrop-blur mb-4">
             <div className="mb-3">
@@ -135,21 +150,7 @@ function BatchTranslatePanel() {
                 </div>
 
                 <div className="space-y-2">
-                    <div className="flex gap-2">
-                        <input
-                            className="border p-2 rounded w-28"
-                            value={sourceLanguage}
-                            onChange={e => setSourceLanguage(e.target.value)}
-                            placeholder="from (auto)"
-                        />
-                        <span className="self-center">→</span>
-                        <input
-                            className="border p-2 rounded w-28"
-                            value={targetLanguage}
-                            onChange={e => setTargetLanguage(e.target.value)}
-                            placeholder="to (en)"
-                        />
-                    </div>
+                    <LanguageSelector {...languageSelectorProps} />
                     <div className="flex gap-2">
                         <button
                             className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"

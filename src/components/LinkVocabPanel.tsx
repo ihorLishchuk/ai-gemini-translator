@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { extractKeywords, type Keyword } from "../utils/keywords";
 import { useTranslation } from "../hooks/useTranslation";
 import {useHistorySlice} from "../store/useHistoryStore";
 import {useLanguageSwap} from "../hooks/useLanguageSwap";
+import LanguageSelector from "./LanguageSelector";
 
 async function fetchArticleText(url: string): Promise<string> {
     let u = url.trim();
@@ -16,6 +17,7 @@ async function fetchArticleText(url: string): Promise<string> {
 type Sel = Record<string, boolean>;
 
 function LinkVocabPanel() {
+    const [inputText, setInputText] = useState('');
     const [url, setUrl] = useState("");
 
     const [article, setArticle] = useState("");
@@ -28,12 +30,13 @@ function LinkVocabPanel() {
     const [progress, setProgress] = useState({ done: 0, total: 0 });
 
     const { init } = useHistorySlice(({ init }) => ({ init }));
-    const { handleTranslate } = useTranslation();
+    const { translatedText, setTranslatedText, handleTranslate } = useTranslation();
     const {
         sourceLanguage,
         targetLanguage,
         setTargetLanguage,
-        setSourceLanguage
+        setSourceLanguage,
+        swapLanguages,
     } = useLanguageSwap();
 
     const anySelected = useMemo(() => Object.values(selected).some(Boolean), [selected]);
@@ -87,6 +90,18 @@ function LinkVocabPanel() {
         setRunning(false);
     }
 
+    const languageSelectorProps = {
+        sourceLanguage,
+        targetLanguage,
+        setSourceLanguage,
+        setTargetLanguage,
+        swapLanguages,
+        inputText,
+        translatedText,
+        setInputText,
+        setTranslatedText
+    }
+
     return (
         <div className="p-4 border rounded-lg mb-4 shadow-sm bg-white/70 backdrop-blur">
             <div className="mb-3">
@@ -103,23 +118,7 @@ function LinkVocabPanel() {
                         onChange={e => setUrl(e.target.value)}
                         disabled={loading || running}
                     />
-                    <div className="flex gap-2">
-                        <input
-                            className="border p-2 rounded w-28"
-                            value={sourceLanguage}
-                            onChange={e => setSourceLanguage(e.target.value)}
-                            placeholder="from (auto)"
-                            disabled={loading || running}
-                        />
-                        <span className="self-center">→</span>
-                        <input
-                            className="border p-2 rounded w-28"
-                            value={targetLanguage}
-                            onChange={e => setTargetLanguage(e.target.value)}
-                            placeholder="to (en)"
-                            disabled={loading || running}
-                        />
-                    </div>
+                    <LanguageSelector {...languageSelectorProps} />
                     <button
                         className="px-3 py-1 rounded bg-black text-white disabled:opacity-60"
                         onClick={handleFetch}
